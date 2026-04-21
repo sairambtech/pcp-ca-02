@@ -10,9 +10,13 @@ const Orders = () => {
   return (
     <div className="container">
       <h2>Orders</h2>
-      {state.orders.map((order) => (
-        <OrderCard key={order.orderId} order={order} />
-      ))}
+      {state.orders.length === 0 ? (
+        <p>No orders found</p>
+      ) : (
+        state.orders.map((order) => (
+          <OrderCard key={order.orderId} order={order} />
+        ))
+      )}
     </div>
   );
 };

@@ -17,11 +17,24 @@ export function AppProvider({ children }) {
         const dataUrl = tokenResponse.dataUrl;
 
         const response = await fetchOrders(token, dataUrl);
-        const payload = response.data;
+        const rawData = response.data?.data;
 
-        const ordersArray = Array.isArray(payload.data)
-          ? payload.data
-          : Object.values(payload.data || {});
+        let ordersArray = [];
+
+        if (Array.isArray(rawData)) {
+          const nestedArray = rawData.find((item) => Array.isArray(item));
+          if (nestedArray) {
+            ordersArray = nestedArray;
+          } else {
+            ordersArray = rawData.filter(
+              (item) => item && typeof item === 'object' && !Array.isArray(item)
+            );
+          }
+        } else if (rawData && typeof rawData === 'object') {
+          ordersArray = Object.values(rawData).flat().filter(
+            (item) => item && typeof item === 'object'
+          );
+        }
 
         dispatch({ type: 'SET_ORDERS', payload: ordersArray });
       } catch (error) {
