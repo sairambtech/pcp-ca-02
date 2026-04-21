@@ -5,11 +5,11 @@ const Status = () => {
   const { state } = useAppContext();
 
   const totalOrders = state.orders.length;
-  const deliveredOrders = state.orders.filter((order) =>
-    (order.status || order.orderStatus || '').toLowerCase() === 'delivered'
+  const deliveredOrders = state.orders.filter(
+    (order) => order.status.toLowerCase() === 'delivered'
   ).length;
-  const cancelledOrders = state.orders.filter((order) =>
-    (order.status || order.orderStatus || '').toLowerCase() === 'cancelled'
+  const cancelledOrders = state.orders.filter(
+    (order) => order.status.toLowerCase() === 'cancelled'
   ).length;
 
   useEffect(() => {
@@ -26,12 +26,9 @@ const Status = () => {
   return (
     <div className="container">
       <h2>Status</h2>
-
-      <div>
-        <p>Total Orders: <span data-testid="total-orders">{totalOrders}</span></p>
-        <p>Delivered Orders: <span data-testid="delivered-orders">{deliveredOrders}</span></p>
-        <p>Cancelled Orders: <span data-testid="cancelled-orders">{cancelledOrders}</span></p>
-      </div>
+      <p>Total Orders: <span data-testid="total-orders">{totalOrders}</span></p>
+      <p>Delivered Orders: <span data-testid="delivered-orders">{deliveredOrders}</span></p>
+      <p>Cancelled Orders: <span data-testid="cancelled-orders">{cancelledOrders}</span></p>
     </div>
   );
 };

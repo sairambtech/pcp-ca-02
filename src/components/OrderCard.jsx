@@ -1,18 +1,14 @@
 import { Link } from 'react-router-dom';
 
 const OrderCard = ({ order }) => {
-  const orderId = order.orderId || order.id || order.orderID;
-  const customerId = order.customerId || order.customerID || order.customer || order.userId;
-  const status = order.status || order.orderStatus || 'N/A';
-  const total = order.total || order.amount || order.price || 0;
-
   return (
-    <div data-testid="order-item" style={{ marginBottom: '16px' }}>
-      <p>Order ID: {orderId}</p>
-      <p>Customer ID: {customerId}</p>
-      <p>Status: {status}</p>
-      <p>Total: {total}</p>
-      <Link to={`/orders/${orderId}`}>View Details</Link>
+    <div data-testid="order-item" style={{ marginBottom: '20px', padding: '12px', border: '1px solid #ccc' }}>
+      <p><strong>Order ID:</strong> {order.orderId}</p>
+      <p><strong>Customer Name:</strong> {order.customerName}</p>
+      <p><strong>Restaurant:</strong> {order.restaurant}</p>
+      <p><strong>Status:</strong> {order.status}</p>
+      <p><strong>Total:</strong> ₹{order.totalAmount}</p>
+      <Link to={`/orders/${order.orderId}`}>View Details</Link>
     </div>
   );
 };

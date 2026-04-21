@@ -16,20 +16,15 @@ export function AppProvider({ children }) {
         const token = tokenResponse.token;
         const dataUrl = tokenResponse.dataUrl;
 
-        console.log('TOKEN USED:', token);
-        console.log('DATA URL USED:', dataUrl);
-
         const response = await fetchOrders(token, dataUrl);
+        const payload = response.data;
 
-        const ordersArray = Array.isArray(response.data)
-          ? response.data
-          : Object.values(response.data || {});
+        const ordersArray = Array.isArray(payload.data)
+          ? payload.data
+          : Object.values(payload.data || {});
 
         dispatch({ type: 'SET_ORDERS', payload: ordersArray });
       } catch (error) {
-        console.log('API ERROR:', error);
-        console.log('ERROR RESPONSE:', error.response?.data);
-
         dispatch({
           type: 'FETCH_ERROR',
           payload:

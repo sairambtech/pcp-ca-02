@@ -9,7 +9,6 @@ export const fetchToken = async () => {
     password: '447897',
   });
 
-  console.log('TOKEN RESPONSE:', response.data);
   return response.data;
 };
 
@@ -20,6 +19,5 @@ export const fetchOrders = async (token, dataUrl) => {
     },
   });
 
-  console.log('ORDERS RESPONSE:', response.data);
-  return response.data;
+  return response;
 };

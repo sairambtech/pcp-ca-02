@@ -8,11 +8,9 @@ const Filter = () => {
 
   const filteredOrders = useMemo(() => {
     if (selectedStatus === 'all') return state.orders;
-
-    return state.orders.filter((order) => {
-      const status = (order.status || order.orderStatus || '').toLowerCase();
-      return status === selectedStatus.toLowerCase();
-    });
+    return state.orders.filter(
+      (order) => order.status.toLowerCase() === selectedStatus.toLowerCase()
+    );
   }, [selectedStatus, state.orders]);
 
   if (state.loading) return <p>Loading...</p>;
@@ -27,17 +25,14 @@ const Filter = () => {
         onChange={(e) => setSelectedStatus(e.target.value)}
       >
         <option value="all">All</option>
-        <option value="delivered">Delivered</option>
-        <option value="pending">Pending</option>
-        <option value="cancelled">Cancelled</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Pending">Pending</option>
+        <option value="Cancelled">Cancelled</option>
       </select>
 
       <div style={{ marginTop: '16px' }}>
-        {filteredOrders.map((order, index) => (
-          <OrderCard
-            key={order.orderId || order.id || index}
-            order={order}
-          />
+        {filteredOrders.map((order) => (
+          <OrderCard key={order.orderId} order={order} />
         ))}
       </div>
     </div>
