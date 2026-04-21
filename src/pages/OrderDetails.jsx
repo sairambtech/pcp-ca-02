@@ -26,11 +26,15 @@ const OrderDetails = () => {
       <p><strong>Rating:</strong> {order.rating}</p>
 
       <h3>Items</h3>
-      {order.items.map((item, index) => (
-        <div key={index}>
-          <p>{item.name} - ₹{item.price} x {item.quantity}</p>
-        </div>
-      ))}
+      {order.items.length === 0 ? (
+        <p>No items</p>
+      ) : (
+        order.items.map((item, index) => (
+          <div key={index}>
+            <p>{item.name} - ₹{item.price} x {item.quantity}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };

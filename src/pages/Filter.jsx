@@ -8,6 +8,7 @@ const Filter = () => {
 
   const filteredOrders = useMemo(() => {
     if (selectedStatus === 'all') return state.orders;
+
     return state.orders.filter(
       (order) => order.status.toLowerCase() === selectedStatus.toLowerCase()
     );
