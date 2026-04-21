@@ -5,13 +5,15 @@ const Orders = () => {
   const { state } = useAppContext();
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Orders</h2>
+    <div className="container">
+      <h2 className="page-title">Orders</h2>
       {state.loading && <p>Loading...</p>}
-      {state.error && <p>{state.error}</p>}
-      {state.orders.map((order) => (
-        <OrderCard key={order.orderId} order={order} />
-      ))}
+      {state.error && <p className="error">{state.error}</p>}
+      <div className="card-grid">
+        {state.orders.map((order) => (
+          <OrderCard key={order.orderId} order={order} />
+        ))}
+      </div>
     </div>
   );
 };

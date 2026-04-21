@@ -1,18 +1,14 @@
 import { NavLink } from "react-router-dom";
 
-const linkStyle = ({ isActive }) => ({
-  marginRight: "16px",
-  textDecoration: "none",
-  fontWeight: isActive ? "700" : "400",
-  color: isActive ? "#0d6efd" : "#222",
-});
-
 const Navbar = () => {
   return (
-    <nav style={{ padding: "16px", borderBottom: "1px solid #ddd" }}>
-      <NavLink to="/orders" style={linkStyle}>Orders</NavLink>
-      <NavLink to="/filter" style={linkStyle}>Filter</NavLink>
-      <NavLink to="/status" style={linkStyle}>Status</NavLink>
+    <nav>
+      <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>CA2 Orders</div>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <NavLink to="/orders">Orders</NavLink>
+        <NavLink to="/filter">Filter</NavLink>
+        <NavLink to="/status">Status</NavLink>
+      </div>
     </nav>
   );
 };
