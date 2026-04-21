@@ -1,17 +1,26 @@
-import { useAppContext } from "../context/AppContext";
+import { useEffect } from 'react';
+import { useAppContext } from '../context/AppContext';
 
 const Status = () => {
   const { state } = useAppContext();
 
-  const totalOrders = state.orders.length;
-  const deliveredOrders = state.orders.filter((order) => order.status === "delivered").length;
-  const cancelledOrders = state.orders.filter((order) => order.status === "cancelled").length;
+  const orders = state.orders || [];
 
-  window.appState = {
-    totalOrders,
-    deliveredOrders,
-    cancelledOrders,
-  };
+  const totalOrders = orders.length;
+  const deliveredOrders = orders.filter(
+    (order) => order.status?.toLowerCase() === 'delivered'
+  ).length;
+  const cancelledOrders = orders.filter(
+    (order) => order.status?.toLowerCase() === 'cancelled'
+  ).length;
+
+  useEffect(() => {
+    window.appState = {
+      totalOrders,
+      deliveredOrders,
+      cancelledOrders,
+    };
+  }, [totalOrders, deliveredOrders, cancelledOrders]);
 
   return (
     <div className="container">

@@ -1,31 +1,48 @@
 export const initialState = {
-  orders: [],
-  loading: false,
-  error: null,
+  orders: [
+    {
+      id: 1,
+      customerName: 'Arun',
+      item: 'Laptop',
+      status: 'delivered',
+      amount: 55000
+    },
+    {
+      id: 2,
+      customerName: 'Priya',
+      item: 'Phone',
+      status: 'cancelled',
+      amount: 25000
+    },
+    {
+      id: 3,
+      customerName: 'Rahul',
+      item: 'Headset',
+      status: 'pending',
+      amount: 3000
+    }
+  ]
 };
 
-export const AppReducer = (state, action) => {
+export function appReducer(state, action) {
   switch (action.type) {
-    case "SET_LOADING":
-      return { ...state, loading: true, error: null };
+    case 'SET_ORDERS':
+      return {
+        ...state,
+        orders: action.payload
+      };
 
-    case "SET_ORDERS":
-      return { ...state, orders: action.payload, loading: false };
-
-    case "SET_ERROR":
-      return { ...state, loading: false, error: action.payload };
-
-    case "UPDATE_ORDER":
+    case 'UPDATE_ORDER_STATUS':
       return {
         ...state,
         orders: state.orders.map((order) =>
-          order.orderId === action.payload.orderId
-            ? { ...order, ...action.payload.updates }
+          order.id === action.payload.id
+            ? { ...order, status: action.payload.status }
             : order
-        ),
+        )
       };
 
     default:
       return state;
   }
-};
+}
