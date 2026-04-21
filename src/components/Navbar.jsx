@@ -1,13 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav>
-      <div style={{ fontWeight: 800, fontSize: "1.1rem" }}>CA2 Orders</div>
-      <div style={{ display: "flex", gap: "8px" }}>
+    <nav style={{ padding: '10px' }}>
+      <h1>CA2 Orders</h1>
+      <div style={{ display: 'flex', gap: '12px' }}>
         <NavLink to="/orders">Orders</NavLink>
         <NavLink to="/filter">Filter</NavLink>
-        <NavLink to="/status">Status</NavLink>
+        <NavLink to="/stats">Status</NavLink>
       </div>
     </nav>
   );

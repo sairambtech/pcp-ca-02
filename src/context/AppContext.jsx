@@ -8,28 +8,40 @@ export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   useEffect(() => {
-  const loadData = async () => {
-    try {
-      dispatch({ type: 'FETCH_START' });
+    const loadData = async () => {
+      try {
+        dispatch({ type: 'FETCH_START' });
 
-      const token = await fetchToken();
-      const data = await fetchOrders(token);
+        const tokenResponse = await fetchToken();
+        const token = tokenResponse.token;
+        const dataUrl = tokenResponse.dataUrl;
 
-      console.log('API DATA:', data);
+        console.log('TOKEN USED:', token);
+        console.log('DATA URL USED:', dataUrl);
 
-      dispatch({ type: 'SET_ORDERS', payload: data });
-    } catch (error) {
-      console.log('API ERROR:', error);
-      dispatch({
-        type: 'FETCH_ERROR',
-        payload: error.response?.data?.message || error.message,
-      });
-    }
-  };
+        const response = await fetchOrders(token, dataUrl);
 
-  loadData();
-}, []);
+        const ordersArray = Array.isArray(response.data)
+          ? response.data
+          : Object.values(response.data || {});
 
+        dispatch({ type: 'SET_ORDERS', payload: ordersArray });
+      } catch (error) {
+        console.log('API ERROR:', error);
+        console.log('ERROR RESPONSE:', error.response?.data);
+
+        dispatch({
+          type: 'FETCH_ERROR',
+          payload:
+            error.response?.data?.message ||
+            JSON.stringify(error.response?.data) ||
+            error.message,
+        });
+      }
+    };
+
+    loadData();
+  }, []);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
@@ -41,3 +53,5 @@ export function AppProvider({ children }) {
 export function useAppContext() {
   return useContext(AppContext);
 }
+
+export default AppContext;

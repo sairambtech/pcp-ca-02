@@ -4,14 +4,12 @@ import { useAppContext } from '../context/AppContext';
 const Status = () => {
   const { state } = useAppContext();
 
-  const orders = state.orders || [];
-
-  const totalOrders = orders.length;
-  const deliveredOrders = orders.filter(
-    (order) => order.status?.toLowerCase() === 'delivered'
+  const totalOrders = state.orders.length;
+  const deliveredOrders = state.orders.filter((order) =>
+    (order.status || order.orderStatus || '').toLowerCase() === 'delivered'
   ).length;
-  const cancelledOrders = orders.filter(
-    (order) => order.status?.toLowerCase() === 'cancelled'
+  const cancelledOrders = state.orders.filter((order) =>
+    (order.status || order.orderStatus || '').toLowerCase() === 'cancelled'
   ).length;
 
   useEffect(() => {
@@ -22,25 +20,17 @@ const Status = () => {
     };
   }, [totalOrders, deliveredOrders, cancelledOrders]);
 
+  if (state.loading) return <p>Loading...</p>;
+  if (state.error) return <p>{state.error}</p>;
+
   return (
     <div className="container">
-      <h2 className="page-title">Status</h2>
+      <h2>Status</h2>
 
-      <div className="stats-grid">
-        <div className="stat-box">
-          <h3>Total Orders</h3>
-          <strong data-testid="total-orders">{totalOrders}</strong>
-        </div>
-
-        <div className="stat-box">
-          <h3>Delivered Orders</h3>
-          <strong data-testid="delivered-orders">{deliveredOrders}</strong>
-        </div>
-
-        <div className="stat-box">
-          <h3>Cancelled Orders</h3>
-          <strong data-testid="cancelled-orders">{cancelledOrders}</strong>
-        </div>
+      <div>
+        <p>Total Orders: <span data-testid="total-orders">{totalOrders}</span></p>
+        <p>Delivered Orders: <span data-testid="delivered-orders">{deliveredOrders}</span></p>
+        <p>Cancelled Orders: <span data-testid="cancelled-orders">{cancelledOrders}</span></p>
       </div>
     </div>
   );

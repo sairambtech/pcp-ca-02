@@ -1,34 +1,43 @@
-import { useState } from "react";
-import { useAppContext } from "../context/AppContext";
-import OrderCard from "../components/OrderCard";
+import { useMemo, useState } from 'react';
+import { useAppContext } from '../context/AppContext';
+import OrderCard from '../components/OrderCard';
 
 const Filter = () => {
   const { state } = useAppContext();
-  const [status, setStatus] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState('all');
 
-  const filteredOrders =
-    status === "all"
-      ? state.orders
-      : state.orders.filter((order) => order.status === status);
+  const filteredOrders = useMemo(() => {
+    if (selectedStatus === 'all') return state.orders;
+
+    return state.orders.filter((order) => {
+      const status = (order.status || order.orderStatus || '').toLowerCase();
+      return status === selectedStatus.toLowerCase();
+    });
+  }, [selectedStatus, state.orders]);
+
+  if (state.loading) return <p>Loading...</p>;
+  if (state.error) return <p>{state.error}</p>;
 
   return (
     <div className="container">
-      <h2 className="page-title">Filter Orders</h2>
+      <h2>Filter Orders</h2>
 
       <select
-        data-testid="filter-input"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
+        value={selectedStatus}
+        onChange={(e) => setSelectedStatus(e.target.value)}
       >
         <option value="all">All</option>
-        <option value="ordered">Ordered</option>
-        <option value="preparing">Preparing</option>
         <option value="delivered">Delivered</option>
+        <option value="pending">Pending</option>
+        <option value="cancelled">Cancelled</option>
       </select>
 
-      <div className="card-grid" style={{ marginTop: "18px" }}>
-        {filteredOrders.map((order) => (
-          <OrderCard key={order.orderId} order={order} />
+      <div style={{ marginTop: '16px' }}>
+        {filteredOrders.map((order, index) => (
+          <OrderCard
+            key={order.orderId || order.id || index}
+            order={order}
+          />
         ))}
       </div>
     </div>
